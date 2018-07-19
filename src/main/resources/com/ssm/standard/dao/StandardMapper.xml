@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.standard.dao.StandardMapper">
+  <resultMap id="BaseResultMap" type="com.ssm.standard.entity.Standard">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="std_num" jdbcType="VARCHAR" property="stdNum" />
+    <result column="zhName" jdbcType="VARCHAR" property="zhname" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="keys" jdbcType="VARCHAR" property="keys" />
+    <result column="release_date" jdbcType="TIMESTAMP" property="releaseDate" />
+    <result column="impl_date" jdbcType="TIMESTAMP" property="implDate" />
+    <result column="package_path" jdbcType="VARCHAR" property="packagePath" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, std_num, zhName, version, keys, release_date, impl_date, package_path
+  </sql>
+  <select id="selectByExample" parameterType="com.ssm.standard.entity.StandardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from standard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from standard
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from standard
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.standard.entity.StandardExample">
+    delete from standard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ssm.standard.entity.Standard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into standard (std_num, zhName, version,  keys, release_date, impl_date, package_path)
+    values (#{stdNum},#{zhname},#{version},#{keys},#{releaseDate},#{implDate},#{packagePath})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.standard.entity.Standard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into standard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stdNum != null">
+        std_num,
+      </if>
+      <if test="zhname != null">
+        zhName,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="keys != null">
+        keys,
+      </if>
+      <if test="releaseDate != null">
+        release_date,
+      </if>
+      <if test="implDate != null">
+        impl_date,
+      </if>
+      <if test="packagePath != null">
+        package_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stdNum != null">
+        #{stdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="zhname != null">
+        #{zhname,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="keys != null">
+        #{keys,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseDate != null">
+        #{releaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="implDate != null">
+        #{implDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="packagePath != null">
+        #{packagePath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ssm.standard.entity.StandardExample" resultType="java.lang.Long">
+    select count(*) from standard
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update standard
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.stdNum != null">
+        std_num = #{record.stdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhname != null">
+        zhName = #{record.zhname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keys != null">
+        keys = #{record.keys,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releaseDate != null">
+        release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.implDate != null">
+        impl_date = #{record.implDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.packagePath != null">
+        package_path = #{record.packagePath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update standard
+    set id = #{record.id,jdbcType=INTEGER},
+      std_num = #{record.stdNum,jdbcType=VARCHAR},
+      zhName = #{record.zhname,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      keys = #{record.keys,jdbcType=VARCHAR},
+      release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
+      impl_date = #{record.implDate,jdbcType=TIMESTAMP},
+      package_path = #{record.packagePath,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.standard.entity.Standard">
+    update standard
+    <set>
+      <if test="stdNum != null">
+        std_num = #{stdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="zhname != null">
+        zhName = #{zhname,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="keys != null">
+        keys = #{keys,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseDate != null">
+        release_date = #{releaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="implDate != null">
+        impl_date = #{implDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="packagePath != null">
+        package_path = #{packagePath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.standard.entity.Standard">
+    update standard
+    set std_num = #{stdNum,jdbcType=VARCHAR},
+      zhName = #{zhname,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      keys = #{keys,jdbcType=VARCHAR},
+      release_date = #{releaseDate,jdbcType=TIMESTAMP},
+      impl_date = #{implDate,jdbcType=TIMESTAMP},
+      package_path = #{packagePath,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="standardList" type="com.ssm.standard.entity.Standard">
+    <id property="id" column="id" />
+    <result property="stdNum" column="std_num"/>
+    <result property="releaseDate" column="release_date"/>
+    <result property="implDate" column="impl_date"/>
+    <result property="packagePath" column="package_path"/>
+  </resultMap>
+
+  <select id="getByCondition"  resultMap="standardList">
+    SELECT
+    *
+    FROM standard
+    <where>
+      <if test="condition!=null and condition !=''">
+        <bind name="condition" value="'%'+condition+'%'"></bind>
+        std_num LIKE #{condition} OR  zhname LIKE #{condition}
+      </if>
+    </where>
+    order by CONVERT((SUBSTRING_INDEX(SUBSTRING_INDEX(std_num, '.', -1),'-',1)),SIGNED) ASC
+    limit #{pageNo},#{pageSize}
+  </select>
+  <select id="getCountByCondition" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM standard
+    <where>
+      <if test="condition != null and condition !='' ">
+        <bind name="condition" value="'%'+condition+'%'"/>
+        std_num LIKE #{condition} or zhname LIKE #{condition}
+      </if>
+    </where>
+  </select>
+
+
+  <insert id="addStandard" >
+    INSERT INTO standard(std_num, zhName, version, `keys`, release_date, impl_date, package_path)
+    VALUES (#{stdNum,jdbcType=VARCHAR}, #{zhname,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR},
+      #{keys,jdbcType=VARCHAR}, #{releaseDate,jdbcType=TIMESTAMP}, #{implDate,jdbcType=TIMESTAMP},
+      #{packagePath,jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="delStandard">
+
+    delete from standard where id in
+    <foreach collection="array" item="ids" open="(" separator="," close=")">
+      #{ids}
+    </foreach>
+  </delete>
+  <select id="stdNumExists" resultType="java.lang.Integer">
+    SELECT count(1) FROM standard WHERE std_num like CONCAT('%',#{stdNum},'%')
+  </select>
+
+  <select id="queryById" resultMap="standardList">
+    select * from standard where id=#{id}
+  </select>
+
+  <update id="modifyStandard">
+    update standard
+    <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+      <if test="zhname != null">zhname=#{zhname},</if>
+      <if test="version != null">version=#{version},</if>
+      <if test="keys != null">`keys`=#{keys},</if>
+      <if test="releaseDate != null">release_date=#{releaseDate},</if>
+      <if test="implDate != null">impl_date=#{implDate},</if>
+      <if test="packagePath != null">package_path=#{packagePath},</if>
+    </trim>
+  </update>
+</mapper>
